@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig, type HeadConfig } from 'vitepress'
 
 const SITE_URL = 'https://pve.oowo.cc'
 const SITE_NAME = 'PVE Tools Pro'
@@ -25,6 +25,23 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   ignoreDeadLinks: 'localhostLinks',
+  vite: {
+    plugins: [
+      {
+        name: 'skip-unused-fonts',
+        generateBundle(_options, bundle) {
+          // 项目主要使用 HarmonyOS Sans，Inter 仅作回退
+          // 仅保留 latin 和 latin-ext 子集，移除 cyrillic/greek/vietnamese 等
+          const keep = /inter-(roman|italic)-(latin|latinext)/i
+          for (const fileName of Object.keys(bundle)) {
+            if (/inter.*\.woff2$/i.test(fileName) && !keep.test(fileName)) {
+              delete bundle[fileName]
+            }
+          }
+        }
+      }
+    ]
+  },
   sitemap: {
     hostname: SITE_URL,
     lastmodDateOnly: true,
@@ -51,6 +68,7 @@ export default defineConfig({
     ['meta', { property: 'og:site_name', content: SITE_NAME }],
     ['meta', { property: 'og:locale', content: 'zh_CN' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:site', content: '@Mapleawaa' }],
     ['link', { rel: 'stylesheet', href: 'https://s1.hdslb.com/bfs/static/jinkela/longtu/images/harmonyos_sans_sc.css' }],
     ['link', { rel: 'stylesheet', href: 'https://s1.hdslb.com/bfs/static/jinkela/longtu/images/harmonyos_sans_sc_mono.css' }]
   ],
@@ -58,10 +76,11 @@ export default defineConfig({
     const url = pageToUrl(page)
     const pageTitle = title || SITE_NAME
     const pageDescription = description || SITE_DESCRIPTION
+    const isArticle = page.startsWith('advanced/')
 
-    return [
+    const head: HeadConfig[] = [
       ['link', { rel: 'canonical', href: url }],
-      ['meta', { property: 'og:type', content: 'website' }],
+      ['meta', { property: 'og:type', content: isArticle ? 'article' : 'website' }],
       ['meta', { property: 'og:title', content: pageTitle }],
       ['meta', { property: 'og:description', content: pageDescription }],
       ['meta', { property: 'og:url', content: url }],
@@ -72,6 +91,29 @@ export default defineConfig({
       ['meta', { name: 'twitter:description', content: pageDescription }],
       ['meta', { name: 'twitter:image', content: DEFAULT_OG_IMAGE }]
     ]
+
+    // 首页添加 JSON-LD 结构化数据
+    if (page === '' || page === 'index.md') {
+      head.push([
+        'script',
+        { type: 'application/ld+json' },
+        JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: SITE_NAME,
+          url: SITE_URL,
+          description: SITE_DESCRIPTION,
+          author: { '@type': 'Person', name: 'Maple' },
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: `${SITE_URL}/?q={search_term_string}`,
+            'query-input': 'required name=search_term_string'
+          }
+        })
+      ])
+    }
+
+    return head
   },
   themeConfig: {
     logo: {
@@ -80,14 +122,30 @@ export default defineConfig({
     },
     nav: [
       { text: '首页', link: '/' },
-      { text: '公告', link: '/update' },
       { text: '使用指南', link: '/guide' },
-      { text: '提交插件', link: '/submit-plugin' },
       { text: '高级教程', link: '/advanced/' },
-      { text: '更新日志', link: '/update' },
-      { text: '开发计划', link: '/todo' },
-      { text: 'TOS', link: '/tos' },
-      { text: 'ULA', link: '/ula' },
+      { text: '提交插件', link: '/submit-plugin' },
+      {
+        text: '项目动态',
+        items: [
+          { text: '更新日志', link: '/update' },
+          { text: '开发计划', link: '/todo' }
+        ]
+      },
+      {
+        text: '支持',
+        items: [
+          { text: '付费技术支持', link: '/pay' },
+          { text: '赞助和加群', link: '/sponsor' }
+        ]
+      },
+      {
+        text: '法律条款',
+        items: [
+          { text: '服务条款（TOS）', link: '/tos' },
+          { text: '最终用户许可（ULA）', link: '/ula' }
+        ]
+      },
       { text: 'GitHub', link: 'https://github.com/Mapleawaa/PVE-Tools-9' }
     ],
     search: {
@@ -105,9 +163,21 @@ export default defineConfig({
           { text: '提交插件', link: '/submit-plugin' },
           { text: '更新日志', link: '/update' },
           { text: '开发计划', link: '/todo' },
-          { text: '服务条款（TOS）', link: '/tos' },
-          { text: '最终用户许可（ULA）', link: '/ula' },
           { text: '常见问题', link: '/faq' }
+        ]
+      },
+      {
+        text: '支持与赞助',
+        items: [
+          { text: '付费技术支持', link: '/pay' },
+          { text: '赞助和加群', link: '/sponsor' }
+        ]
+      },
+      {
+        text: '法律条款',
+        items: [
+          { text: '服务条款（TOS）', link: '/tos' },
+          { text: '最终用户许可（ULA）', link: '/ula' }
         ]
       },
       {

@@ -93,16 +93,16 @@
 }
 
 .VPFeatures .item:nth-child(1) .icon::before {
-  mask-image: url('https://api.iconify.design/mdi:server-network.svg');
+  mask-image: url('/icons/server-network.svg');
 }
 .VPFeatures .item:nth-child(2) .icon::before {
-  mask-image: url('https://api.iconify.design/mdi:shield-check-outline.svg');
+  mask-image: url('/icons/shield-check-outline.svg');
 }
 .VPFeatures .item:nth-child(3) .icon::before {
-  mask-image: url('https://api.iconify.design/mdi:harddisk.svg');
+  mask-image: url('/icons/harddisk.svg');
 }
 .VPFeatures .item:nth-child(4) .icon::before {
-  mask-image: url('https://api.iconify.design/mdi:dots-horizontal.svg');
+  mask-image: url('/icons/dots-horizontal.svg');
 }
 
 /* 页面切换动画基础设置 */
@@ -192,6 +192,11 @@ html.view-transitioning {
 }
 
 /* 兼容不支持 View Transitions 的浏览器 */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .vp-doc {
   animation: fade-in 0.5s ease-in-out;
 }

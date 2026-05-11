@@ -4,8 +4,11 @@ description: 最终用户许可与附加责任限制协议（ULA）
 ---
 
 # 最终用户许可与附加责任限制协议（ULA）
-**项目：PVE Tools Pro**  
-**版本：3.0 (Definitive Legal Revision)**  
+
+> 本协议与 [服务条款（TOS）](./tos) 共同构成项目的完整使用条款。
+
+**项目：PVE Tools Pro**
+**版本：3.0 (Definitive Legal Revision)**
 **生效日期：2026-04-06**  
 
 **版权声明**：Copyright © 2026 Ciriu Networks  

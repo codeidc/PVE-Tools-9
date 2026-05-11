@@ -11,8 +11,8 @@ const sources = computed(() => {
     { name: '全国可用 Pages托管', url: config.cloudflare || '' },
     { name: 'Github国内加速', url: config.ghfast || '' },
     { name: 'Github源站', url: config.github || '' },
-    { name: '中国大陆备案CDN', url: config.edgeone }
-  ]
+    { name: '中国大陆备案CDN', url: config.edgeone, disabled: !config.edgeone || config.edgeone === '未上线' }
+  ].filter(s => !s.disabled)
 })
 
 const currentIndex = ref(0)

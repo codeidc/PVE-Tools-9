@@ -10,9 +10,7 @@ description: 赞助我，加入我们的 QQ 群，与其他用户分享经验、
 
 ## 🎯 唯一指定的赞助渠道
 
-👉 **[点击此处跳转至爱发电](https://afdian.com/a/cyrenenight)** 👈
-
-*(支持通过微信以及支付宝来直接进行扫码)*
+![微信](./assets/WeChat.jpg)
 
 ---
 
